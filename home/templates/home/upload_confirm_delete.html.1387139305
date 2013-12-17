@@ -1,0 +1,15 @@
+
+{# coding: utf8 #}
+
+<div id="Upload_confirm_delete_header" class="model-confirm-delete-header Upload-confirm-delete-header">
+Are you sure to delete {{ object }}?
+</div>
+
+<form action="." method="post" name="Upload_delete" class="model-confirm-delete-form Upload-confirm-delete-form">
+    {% csrf_token %}
+    {{ form }}
+    <div class="model-confirm-delete-buttons-bar Upload-confirm-delete-buttons-bar">
+        <input type="submit" value="Ok" class="model-confirm-delete-submitUpload-confirm-delete-submit"/>
+        <a href="{% url "home:upload:list" page="1" %}" class="model-confirm-delete-form-cancel Upload-confirm-delete-form-cancel">Cancel </a>
+    </div>
+</form>

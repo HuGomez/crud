@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block titulo %} Administrar Usuarios {% endblock %}
+{% block contenido %}
+	{% if user.is_staff %}
+	<div class="panel panel-primary">
+		<div class="panel-heading">Listado de usuarios</div>
+		<div class="panel-body">
+			{% if not usuarios %}
+			<p>No hay usuarios registrados</p>
+			{% endif %}
+			<div class="table-responsive">
+				<table class="table table-hover table-bordered">
+					<tr>
+						<th>Usuario</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Correo</th>
+						<th>¿Administrador?</th>
+					</tr>
+					{% for u in usuarios %}
+					<tr>
+						<td>
+							<strong>{{u.username}}</strong>
+						</td>
+						<td>
+							<small>{{u.first_name}}</small>
+						</td>
+						<td>
+							<small>{{u.last_name}}</small>
+						</td>
+						<td>
+							<small>{{u.email}}</small>
+						</td>
+						<td>
+							<small>{{u.is_staff}}</small>
+						</td>
+						<td>
+							<center><a href="{% url 'edituser' u.username %}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span>Editar</a></center>
+						</td>
+						<td>
+							<center><a href="{% url 'deleteuser' u.username %}" class="btn btn-default btn-xs" onClick="return confirm (' Está seguro? ');"><span class="glyphicon glyphicon-remove"></span>Borrar</a></center>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+	<a href="{% url 'nuevo' %}" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span> Crear Usuario</a>
+	{% else %}
+	<h1>Lo sentimos, no puedes estar por acá.</h1>
+	{% endif %}
+{% endblock %}

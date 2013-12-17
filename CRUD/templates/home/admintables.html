@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}Bienvenido{% endblock %}
+{% block contenido %}
+<div class="jumbotron">
+    {% if documents %}
+        <ul class="list-group">
+        {% for document in documents %}
+            <li class="list-group-item"><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a>
+            {% if user.is_staff %}
+                <form id="form" action="{% url 'delete' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="docfile" value="{{ document.pk }}" />
+                <input type="submit" value="Borrar" />
+                </form>
+            {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay archivos subidos.</p>
+    {% endif %}
+        <!-- Upload form. Note enctype attribute! -->
+        <form id='form' action="{% url 'admintables' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors }}</p>
+            <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+            <p>
+                {{ form.docfile.errors }}
+                {{ form.docfile }}
+            </p>
+            <p><input type="submit" value="Subir" /></p>
+        </form>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,33 @@
+
+
+
+
+{# coding: utf8 #}
+{% if object %}
+
+<div id="Upload_form_header" class="object-form-header Upload-form-header">
+
+
+
+Editing {{object}}
+</div>
+{% else %}
+Create new {{modelname}}
+{% endif %}
+
+
+
+<form action="." method="post" name="Upload_form" class="model-form Upload-form">
+    {% csrf_token %}
+    <table class="model-form-table Upload-form-table">
+        <tbody class="model-form-tbody Upload-form-tbody">
+            {{ form.as_table }}
+            <tr class="model-form-table-tr Upload-form-table-tr">
+                <td colspan="2" class="model-form-table-tr-td Upload-form-table-tr-td">
+                    <input type="submit" value="Ok" class="model-form-submit Upload-form-submit"/>
+                    <a href="{% url "home:upload:list" page="1" %}" class="model-form-cancel Upload-form-cancel">Cancel </a>
+                </td>
+            </tr>
+       </tbody>
+  </table> 
+</form>

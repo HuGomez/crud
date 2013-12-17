@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generador de Código, Django, CRUD">
+    <meta name="author" content="Grupo 3 - Lab SW">
+    <title>{% block titulo %}Generador de Código{% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/media/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <script src=/media/js/jquery.js></script>
+    <script src=/media/bootstrap/dist/js/bootstrap.js></script>
+    <!-- Custom styles for this template -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      body{
+        background-color: #eee;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding-top:5%;
+        padding-bottom:5%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" >
+      <div class="container">
+        <div class="navbar-collapse collapse">
+        <a class="navbar-brand" href="{% url 'inicio' %}">Generador Código</a>
+        {% if user.is_authenticated %}
+          <p class="navbar-text pull-right">
+            Hola  {{user.username}} !!
+          </p>
+          <ul class="nav navbar-nav">
+            <li>{% if user.is_staff %}
+            <a href="{% url 'adminusers' %}">Administrar Usuarios</a>
+            {% endif %}</li>
+            <li><a href="{% url 'admintables' %}">Administrar Tablas</a></li>
+            <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+          </ul>
+        {% else %}
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+            <li><a href="{% url 'recuperar' %}">Recuperar Contraseña</a></li>
+          </ul>
+        {% endif %}
+        </div> <!-- collapse -->
+      </div><!--container -->
+    </div><!--navbar -->
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span9">
+          <div class="jumbotron">
+            {% block contenido %}
+            {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+	<hr>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  </body>
+</html>

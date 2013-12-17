@@ -1,0 +1,58 @@
+
+
+
+{# coding: utf8 #}
+
+
+
+{% if perms.home.add_upload %}
+    <a href="{% url "home:upload:create"  %}" class="model-new Upload-new">New Upload</a> 
+ {% endif %} 
+
+ {% if object_list %} 
+    <table class="model-list-table Upload-list-table">
+    <thead class="model-list-table-thead Upload-list-table-thead">
+        <tr class="model-list-table-thead-tr Upload-list-table-thead-tr">
+            <th class="model-list-table-tr-th-object Upload-list-table-tr-th-object">Upload </th> 
+            <th class="model-list-table-tr-th-actions Upload-list-table-tr-th-actions"> Actions </th> 
+        </tr>
+    </thead>
+    <tbody class="model-list-table-tbody Upload-list-table-tbody">
+     {% for obj in object_list %} 
+        <tr class="model-list-table-tr Upload-list-table-tr">
+            <td class="model-list-table-tr-td-object Upload-list-table-tr-td-object">{{obj}}</td>
+            <td class="model-list-table-tr-td-actions Upload-list-table-tr-td-actions">
+
+                {% if perms.home.update_upload %}
+                <a href="{% url "home:upload:update" obj.pk %}" class="model-list-table-tr-td-actions-edit Upload-list-table-tr-td-actions-edit">edit</a>
+                {%  endif %}
+
+                {% if perms.home.delete_upload %}
+                <a href="{% url "home:upload:delete" obj.pk %}" class="model-list-table-tr-td-actions-delete Upload-list-table-tr-td-actions-delete">delete</a>
+                {%  endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    {% if is_paginated %}
+        <div class="model-list-pagination Upload-list-pagination">
+            <span class="model-list-page-links">
+                {% if page_obj.has_previous %}
+                    <a href="{% url "home:upload:list" page="" %}" class="model-list-page-links-previous Upload-list-page-links-next-previous">Previous</a>
+                {% endif %}
+                
+                    <span class="page-current">
+                        Page {{page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="{% url "home:upload:list" page_obj.next_page_number %}" class="model-list-page-links-next Upload-list-page-links-next">Next</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+{% else %}
+    <p id="upload_list_not_found_msg" class="model-list-not-found-msg upload-list-not-found-msg"> No uploads found. </p>
+{% endif %}
+
