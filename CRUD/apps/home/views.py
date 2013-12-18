@@ -1,5 +1,5 @@
 #encoding:utf-8
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render, render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from CRUD.apps.home.generate import *
-#from apps.core.backends.mysql import DataBase
+from .DataBase import DataBase
 
 def home(request):
 	return render_to_response('home/index.html', context_instance=RequestContext(request))
@@ -118,8 +118,8 @@ def admintables(request):
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
             newdoc = Upload(docfile = request.FILES['docfile'])
-            db_name, media_filename = exec_sql_file(request.user, request.FILES['docfile'])
             newdoc.save()
+            db_name, media_filename = exec_sql_file(request.user, request.FILES['docfile'])
             #return HttpResponseRedirect('/personalize/' + db_name)
             # Redirect to the document list after POST
             #return HttpResponseRedirect('/admintables')
@@ -140,15 +140,16 @@ def admintables(request):
     )
 
 @login_required()
-def personalize(request, db_name):
+def personalize(request, name):
     if name:
-        conn = DataBase(name=obj.db_name) #connection
+        conn = DataBase(name=name)
         tables = []
         for t in conn.show_tables():
-            tables.append({"name": t, "columns": conn.show_fields(table=t)})
+            tables.append({"name": t, "columns":  conn.show_fields(table=t)})
         return render(request, "home/personalize.html", locals())
     else:
-    	raise Http404
+        raise Http404
+
 
 @login_required
 def delete(request):
