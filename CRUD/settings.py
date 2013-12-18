@@ -10,23 +10,24 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+try:
+    from .local_settings import MYSQL_USER, MYSQL_PASSWD
+except:
+    MYSQL_USER = "root"
+    MYSQL_PASSWD = "hola"
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'crud',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': 'hola',
+        'USER': MYSQL_USER,
+        'PASSWORD': MYSQL_PASSWD,
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
 }
 
-try:
-    from .local_settings import MYSQL_USER, MYSQL_PASSWD
-except:
-    MYSQL_USER = ""
-    MYSQL_PASSWD = ""    
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -173,8 +174,8 @@ except:
     GMAIL_USER = ""
     GMAIL_USER_PASS = ""
 
-EMAIL_HOST_USER = 'GMAIL_USER'
-EMAIL_HOST_PASSWORD = 'GMAIL_USER_PASS'
+EMAIL_HOST_USER = GMAIL_USER
+EMAIL_HOST_PASSWORD = GMAIL_USER_PASS
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587 #1025, 587
 EMAIL_USE_TLS = True
