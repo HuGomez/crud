@@ -120,37 +120,35 @@ def admintables(request):
             newdoc = Upload(docfile = request.FILES['docfile'])
             db_name, media_filename = exec_sql_file(request.user, request.FILES['docfile'])
             newdoc.save()
+            #return HttpResponseRedirect('/personalize/' + db_name)
             # Redirect to the document list after POST
             #return HttpResponseRedirect('/admintables')
-            return redirect(reverse(personalize, args=(obj.id,)))
+            return redirect(reverse(personalize, args=(db_name,)))
             #return HttpResponseRedirect(reverse('home.views.admintables'))
     else:
         form = UploadForm() # A empty, unbound form
+
     # Load documents for the list page
     documents = Upload.objects.all()
     # Render list page with the documents and the form
-    return HttpResponseRedirect('/personalize/' + db_name)
+    
 
-    # return render_to_response(
-    # 	'home/admintables.html',
-    #     {'documents': documents, 'form': form},
-    #     context_instance=RequestContext(request)
-    # )
+    return render_to_response(
+    	'home/admintables.html',
+        {'documents': documents, 'form': form},
+        context_instance=RequestContext(request)
+    )
 
 @login_required()
 def personalize(request, db_name):
-    if db_name:
-        obj = DataBaseTmp.objects.get(id=id_db, is_deleted=False)
-        if obj and obj.user == request.user:
-            conn = DataBase(name=db_temp) #connection
-            tables = []
-            for t in conn.show_tables():
-                tables.append({"name": t, "columns": conn.show_fields(table=t)})
-            return render(request, "personalize.html", locals())
-        else:
-            raise Http404
+    if name:
+        conn = DataBase(name=obj.db_name) #connection
+        tables = []
+        for t in conn.show_tables():
+            tables.append({"name": t, "columns": conn.show_fields(table=t)})
+        return render(request, "home/personalize.html", locals())
     else:
-        raise Http404
+    	raise Http404
 
 @login_required
 def delete(request):
