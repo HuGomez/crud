@@ -10,5 +10,10 @@ urlpatterns = patterns('CRUD.apps.home.views',
     url(r'^delete/usuario/(?P<usuario>.*)/$', 'borrarUsuario', name='deleteuser'),
     url(r'^admintables/$', 'admintables', name='admintables'),
     url(r'^delete/files/$', 'delete', name='delete'),
+
     url(r'^db/(?P<name>[\w]+)/$', 'personalize', name="personalize"),
+    #url(r'^db/(?P<id_db>[0-9]+)/del-table/(?P<table_name>[\w]+)$', 'delete_table', name="del_table"),
+    #url(r'^db/(?P<id_db>[0-9]+)/update-table-name/$', 'update_table_name', name="update_table_name"),
+    #url(r'^db/(?P<id_db>[0-9]+)/inspectdb/$', 'inspectdb', name="inspectdb"),
+    #url(r'^db/(?P<id_db>[0-9]+)/cancel/$', 'close_db', name="close_db"),
 )

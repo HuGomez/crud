@@ -129,7 +129,7 @@ def admintables(request):
     # Load documents for the list page
     documents = Upload.objects.all()
     # Render list page with the documents and the form
-    return HttpResponseRedirect('/personalizar/' + db_temp)
+    return HttpResponseRedirect('/personalize/' + db_name)
 
     # return render_to_response(
     # 	'home/admintables.html',
@@ -137,20 +137,20 @@ def admintables(request):
     #     context_instance=RequestContext(request)
     # )
 
-# @login_required()
-# def personalize(request, id_db):
-#     if id_db:
-#         obj = DataBaseTmp.objects.get(id=id_db, is_deleted=False)
-#         if obj and obj.user == request.user:
-#             conn = DataBase(name=obj.db_name) #connection
-#             tables = []
-#             for t in conn.show_tables():
-#                 tables.append({"name": t, "columns": conn.show_fields(table=t)})
-#             return render(request, "personalize.html", locals())
-#         else:
-#             raise Http404
-#     else:
-#         raise Http404
+@login_required()
+def personalize(request, db_name):
+    if db_name:
+        obj = DataBaseTmp.objects.get(id=id_db, is_deleted=False)
+        if obj and obj.user == request.user:
+            conn = DataBase(name=db_temp) #connection
+            tables = []
+            for t in conn.show_tables():
+                tables.append({"name": t, "columns": conn.show_fields(table=t)})
+            return render(request, "personalize.html", locals())
+        else:
+            raise Http404
+    else:
+        raise Http404
 
 @login_required
 def delete(request):
