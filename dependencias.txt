@@ -1,0 +1,4 @@
+django==1.5.1
+django-simple-captcha
+django-password-reset
+MySQL-python
