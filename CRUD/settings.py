@@ -16,11 +16,17 @@ DATABASES = {
         'NAME': 'crud',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
-        'PASSWORD': 'notiene',
+        'PASSWORD': 'hola',
         'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
         'PORT': '',                      # Set to empty string for default.
     }
 }
+
+try:
+    from .local_settings import MYSQL_USER, MYSQL_PASSWD
+except:
+    MYSQL_USER = ""
+    MYSQL_PASSWD = ""    
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -128,7 +134,6 @@ INSTALLED_APPS = (
     'CRUD.apps.home',
     'password_reset',
     'captcha',
-    'djangocrudgenerator',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -159,6 +164,8 @@ LOGGING = {
         },
     }
 }
+
+
 
 try:
     from .local_settings import GMAIL_USER, GMAIL_USER_PASS

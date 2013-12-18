@@ -1,5 +1,5 @@
 #encoding:utf-8
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
@@ -9,6 +9,8 @@ from CRUD.apps.home.models import Upload
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
+from CRUD.apps.home.generate import *
+#from apps.core.backends.mysql import DataBase
 
 def home(request):
 	return render_to_response('home/index.html', context_instance=RequestContext(request))
@@ -116,20 +118,39 @@ def admintables(request):
         form = UploadForm(request.POST, request.FILES)
         if form.is_valid():
             newdoc = Upload(docfile = request.FILES['docfile'])
+            db_name, media_filename = exec_sql_file(request.user, request.FILES['docfile'])
             newdoc.save()
             # Redirect to the document list after POST
-            return HttpResponseRedirect('/admintables')
+            #return HttpResponseRedirect('/admintables')
+            return redirect(reverse(personalize, args=(obj.id,)))
             #return HttpResponseRedirect(reverse('home.views.admintables'))
     else:
         form = UploadForm() # A empty, unbound form
     # Load documents for the list page
     documents = Upload.objects.all()
     # Render list page with the documents and the form
-    return render_to_response(
-    	'home/admintables.html',
-        {'documents': documents, 'form': form},
-        context_instance=RequestContext(request)
-    )
+    return HttpResponseRedirect('/personalizar/' + db_temp)
+
+    # return render_to_response(
+    # 	'home/admintables.html',
+    #     {'documents': documents, 'form': form},
+    #     context_instance=RequestContext(request)
+    # )
+
+# @login_required()
+# def personalize(request, id_db):
+#     if id_db:
+#         obj = DataBaseTmp.objects.get(id=id_db, is_deleted=False)
+#         if obj and obj.user == request.user:
+#             conn = DataBase(name=obj.db_name) #connection
+#             tables = []
+#             for t in conn.show_tables():
+#                 tables.append({"name": t, "columns": conn.show_fields(table=t)})
+#             return render(request, "personalize.html", locals())
+#         else:
+#             raise Http404
+#     else:
+#         raise Http404
 
 @login_required
 def delete(request):
@@ -142,3 +163,15 @@ def delete(request):
     docToDel.delete()
     return HttpResponseRedirect('/admintables')
     #return HttpResponseRedirect(reverse('home.views.admintables'))
+
+@login_required()
+def inspectdb(request, id_db):
+    if id_db:
+        obj = DataBaseTmp.objects.get_or_none(id=id_db)
+        if obj:
+            filename = create_app(request.user, obj.filename, obj.db_name)
+            return redirect(settings.MEDIA_URL + filename)
+        else:
+            raise Http404
+    else:
+        raise Http404

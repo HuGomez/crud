@@ -10,5 +10,5 @@ urlpatterns = patterns('CRUD.apps.home.views',
     url(r'^delete/usuario/(?P<usuario>.*)/$', 'borrarUsuario', name='deleteuser'),
     url(r'^admintables/$', 'admintables', name='admintables'),
     url(r'^delete/files/$', 'delete', name='delete'),
-    #url(r'^upload_file/$','upload_file_view',name='vista_upload'),
-	)
+    url(r'^db/(?P<name>[\w]+)/$', 'personalize', name="personalize"),
+)
